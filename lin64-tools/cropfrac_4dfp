@@ -1,0 +1,30 @@
+#!/bin/bash
+program=`basename $0`
+if [[ $# != 3 ]]
+then
+    echo "Usage:  $program <fraction to crop> <4dfp to crop> <4dfp cropped>"
+    echo " e.g.,  $program 0.5 NP995_09ho1_v1 ho1v1"
+    echo "N.B.:   $program crops only along x,y axes;"
+    echo "        Cf. ${RELEASE}/crop_4dfp for details"
+    exit
+fi
+
+width=`awk '/matrix size \[1\]/{print $NF}' $2.4dfp.ifh`
+inner=$(echo "scale=0; $width*$1/1" | bc) # scale only operates on /
+halfouter=$(echo "scale=0; ($width-$inner)/2" | bc)
+r0=$(echo "$halfouter+1" | bc)
+rf=$(echo "$r0+$inner-1" | bc)
+xrng="-x${r0}to${rf}"
+
+width=`awk '/matrix size \[2\]/{print $NF}' $2.4dfp.ifh`
+inner=$(echo "scale=0; $width*$1/1" | bc) # scale only operates on /
+halfouter=$(echo "scale=0; ($width-$inner)/2" | bc)
+r0=$(echo "$halfouter+1" | bc)
+rf=$(echo "$r0+$inner-1" | bc)
+yrng="-y${r0}to${rf}"
+
+tmpdir=$(mktemp -dt "`basename $0`.XXXXXXXXXX")
+tmpfp=$tmpdir/`basename $2`
+copy_4dfp $2 $tmpfp
+crop_4dfp $tmpfp $3 $xrng $yrng
+rm -rf $tmpdir

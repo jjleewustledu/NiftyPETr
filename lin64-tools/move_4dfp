@@ -1,0 +1,23 @@
+#!/bin/tcsh
+
+set program = $0
+set program = $program:t
+
+switch (${#argv})
+    case 2:
+        set source = $1
+        set dest   = $2
+	breaksw
+    default:
+	echo "Usage:	$program source destination"
+	echo " e.g.,	$program bad_4dfp_name better_4dfp_name"
+	echo " "
+	echo "$program works only with 4dfp files; it does not work on directories"
+	echo " "
+	exit 1
+	breaksw
+endsw
+
+copy_4dfp $source $dest
+delete_4dfp $source
+

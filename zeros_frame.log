@@ -1,0 +1,44 @@
+Wed Dec 05 14:02:35 2018:  mlfourd.InnerNIfTI from jjlee at pascal initialized /home2/jjlee/Local/Pawel/zeros_frame.log
+Wed Dec 05 14:02:36:189 2018:    344×344×127 <a href="matlab:helpPopup mlfourd.InnerNIfTI" style="font-weight:bold">InnerNIfTI</a> array with properties:
+
+         untouch: 1
+           hdxml: '<nifti_image…'
+          orient: 'RADIOLOGICAL'
+    DESC_LEN_LIM: 1024
+          VIEWER: '/home/usr/jjlee/Local/freesurfer/bin/freeview'
+       noclobber: 0
+             ext: []
+        filetype: 2
+             hdr: [1×1 struct]
+             img: [344×344×127 single]
+          bitpix: 32
+    creationDate: '05-Dec-2018 14:02:33'
+        datatype: 16
+         descrip: 'alg=osem;att=1.0;sct=1;spn=11;sub=14;itr=4;fwhm=2.06110456031;nfrm=1'
+         entropy: 2.7294
+           label: 'zeros_frame'
+         machine: 'ieee-le'
+          mmppix: [2.0863 2.0863 2.0312]
+      negentropy: -2.7294
+    originalType: 'mlfourd.InnerNIfTI'
+          pixdim: [2.0863 2.0863 2.0312]
+    seriesNumber: NaN
+     imagingInfo: [1×1 mlfourd.NIfTIInfo]
+          imgrec: []
+          logger: [1×1 mlpipeline.Logger]
+               N: 1
+       separator: ';'
+           stack: {'alg=osem;att=1.0;sct=1;spn=11;sub=14;itr=4;fwhm=2.06110456031;nfrm=1'}
+          viewer: '/home/usr/jjlee/Local/freesurfer/bin/freeview'
+        filename: 'zeros_frame.nii.gz'
+        filepath: '/home2/jjlee/Local/Pawel'
+      fileprefix: 'zeros_frame'
+      filesuffix: '.nii.gz'
+      fqfilename: '/home2/jjlee/Local/Pawel/zeros_frame.nii.gz'
+    fqfileprefix: '/home2/jjlee/Local/Pawel/zeros_frame'
+            fqfn: '/home2/jjlee/Local/Pawel/zeros_frame.nii.gz'
+            fqfp: '/home2/jjlee/Local/Pawel/zeros_frame'
+
+
+Wed Dec 05 14:02:36:220 2018:  alg=osem;att=1.0;sct=1;spn=11;sub=14;itr=4;fwhm=2.06110456031;nfrm=1
+Wed Dec 05 14:02:51:711 2018:  InnerNIfTIIO.set.filesuffix<-.nii.gz
