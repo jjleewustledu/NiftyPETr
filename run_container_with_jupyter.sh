@@ -18,6 +18,8 @@ if [[ $# -eq 2 ]] ; then
     CMD=' '
 fi
 
-CONTAINER="nvidia-docker run -it --name $CONTAINER_NAME -v ${DOCKER_HOME}/hardwareumaps/:/hardwareumaps -v ${DOCKER_HOME}/NiftyPET_tools/:/NiftyPET_tools -v ${DOCKER_HOME}/Cache:/SubjectsDir $IMAGE_NAME $CMD"
+RECON_PREFIX=${DOCKER_HOME}/Cache/ses-E00853
+
+CONTAINER="nvidia-docker run -it --name $CONTAINER_NAME --net=host -v ${DOCKER_HOME}/hardwareumaps/:/hardwareumaps -v ${DOCKER_HOME}/NiftyPET_tools/:/NiftyPET_tools -v ${DOCKER_HOME}/Cache:/SubjectsDir $IMAGE_NAME $CMD"
 echo 'Starting container with commmand: '$CONTAINER
 eval $CONTAINER

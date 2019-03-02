@@ -1,45 +1,47 @@
 # reference: https://hub.docker.com/u/jjleewustledu
-FROM jjleewustledu/niftypetd-image:Reconstruction
+FROM jjleewustledu/niftypetd-image:nipet
 
 LABEL maintainer="John J. Lee <www.github.com/jjleewustledu>"
 
-# Matlab Compiler Runtime Python Library requires
-RUN yum install -y libXt && \
-    yum install -y compat-libgfortran-41 && \
-    yum install -y tcsh
+# setup volumes
+VOLUME $HOME
+VOLUME $HARDWAREUMAPS
+VOLUME $NIFTYPET_TOOLS
+VOLUME $SUBJECTS_DIR
 
-# open ports for Jupyter, SSH
-EXPOSE 7745
-EXPOSE 22
+# pip install:  anaconda packages will go to /opt/conda/lib/python2.7/site-packages
+RUN pip --no-cache-dir install --upgrade pixiedust
 
-# setup filesystem
-RUN mkdir ds
-ENV HOME=/ds
-ENV SHELL=/bin/bash
-VOLUME /ds
-WORKDIR /ds
-ADD run_jupyter.sh /ds/run_jupyter.sh
-RUN chmod +x /ds/run_jupyter.sh
+# install NiftyPETy, interfile
+WORKDIR $HOME
+COPY NiftyPETy $HOME/NiftyPETy
+COPY interfile $HOME/interfile
+RUN cd $HOME/NiftyPETy && \
+    python setup.py install && \
+    cd $HOME/interfile && \
+    python setup.py install
+# alternatively, install interfile and NiftyPETy manually;
+# then issue:
+# > docker commit niftypetr-container jjleewustledu/niftypetr-image:reconstruction
+# > docker push                       jjleewustledu/niftypetr-image:reconstruction
 
-# setup environment
-ENV MCR_ROOT $HOME/MATLAB-Compiler/MATLAB_Runtime/v94
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$MCR_ROOT/runtime/glnxa64:$MCR_ROOT/bin/glnxa64:$MCR_ROOT/sys/os/glnxa64:$MCR_ROOT/extern/bin/glnxa64:$MCR_ROOT/sys/opengl/lib/glnxa64
-ENV XAPPLRESDIR $MCR_ROOT/v94/X11/app-defaults
-ENV MATLAB_SHELL=$SHELL
-ENV SUBJECTS_DIR $HOME
-ENV RELEASE /ds/lin64-tools
-ENV REFDIR /ds/atlas
-ENV REFDIR1 $REFDIR
-ENV FSLDIR /ds/fsl
-ENV FS_FREESURFERENV_NO_OUTPUT=1
-ENV FREESURFER_HOME=/ds/freesurfer
-ENV PATH $RELEASE:$FSLDIR/bin:$FSLDIR/etc/matlab:$PATH
-ENV HARDWAREUMAPS /ds/hardwareumaps
-ENV CCIR_RAD_MEASUREMENTS_DIR $HOME/xlsx
+# run jupyter
+#EXPOSE 7746
+#WORKDIR $HOME
+#ADD run_jupyter.sh $HOME/run_jupyter.sh
+#RUN chmod +x $HOME/run_jupyter.sh
+#CMD ["./run_jupyter.sh"]
 
-# must install MCR_RUNTIME
-# must mount:  atlas, PyConstructResolved/for_testing, freesurfer, fsl, hardwareumaps, HYGLY*, xlsx
-#. $FREESURFER_HOME/SetUpFreeSurfer.sh
-#. $FSLDIR/etc/fslconf/fsl.sh 
+# run echo_args.py
+#WORKDIR /work
+#COPY echo_args.py /work/echo_args.py
+#ENTRYPOINT ["python", "/work/echo_args.py"]
+#CMD []
 
-CMD ["./run_jupyter.sh"]
+# run bash
+#WORKDIR $SUBJECTS_DIR
+#CMD ["/bin/bash"]
+
+# run reconstruction.py; replace "-h" with "-p", "/SubjectsDir/ses-dir/TRACER_DT1234.0000-Converted-NAC"
+WORKDIR $SUBJECTS_DIR
+CMD ["python", "/work/NiftyPETy/respet/recon/reconstruction.py", "-h"]
