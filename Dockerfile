@@ -1,16 +1,15 @@
 # reference: https://hub.docker.com/u/jjleewustledu
-FROM jjleewustledu/niftypetd-image:nipet
+FROM jjleewustledu/niftypetd-image:nipet_cuda10
 
 LABEL maintainer="John J. Lee <www.github.com/jjleewustledu>"
 
 # setup volumes
-VOLUME $HOME
 VOLUME $HARDWAREUMAPS
 VOLUME $NIFTYPET_TOOLS
 VOLUME $SUBJECTS_DIR
 
 # pip install:  anaconda packages will go to /opt/conda/lib/python2.7/site-packages
-RUN pip --no-cache-dir install --upgrade pixiedust
+#RUN pip --no-cache-dir install --upgrade pixiedust
 
 # install NiftyPETy, interfile
 WORKDIR $HOME
@@ -21,9 +20,9 @@ RUN cd $HOME/NiftyPETy && \
     cd $HOME/interfile && \
     python setup.py install
 # alternatively, install interfile and NiftyPETy manually;
-# then issue:
-# > docker commit niftypetr-container jjleewustledu/niftypetr-image:reconstruction
-# > docker push                       jjleewustledu/niftypetr-image:reconstruction
+# then exit container and issue:
+# > nvidia-docker commit niftypetr-container jjleewustledu/niftypetr-image:reconstruction_cuda10
+# > nvidia-docker push                       jjleewustledu/niftypetr-image:reconstruction_cuda10
 
 # run jupyter
 #EXPOSE 7746
