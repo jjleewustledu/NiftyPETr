@@ -5,9 +5,9 @@ IMAGE_NAME=$2
 CMD=$3
 
 if [[ $# -eq 0 ]] ; then
-    echo 'USAGE: docker rm some-container'
-    echo 'USAGE: run_container.sh some-container [some-image] [CMD]'
-    echo 'N.B.:  default some-image := `basename some-container -container`-image:latest'
+    echo 'USAGE: docker rm some-jupyter-container'
+    echo 'USAGE: run_container.sh some-jupyter-container [some-image] [CMD]'
+    echo 'N.B.:  default some-image := `basename some-jupyter-container -container`-image:latest'
     exit 0
 fi
 if [[ $# -eq 1 ]] ; then
@@ -18,8 +18,8 @@ if [[ $# -eq 2 ]] ; then
     CMD=' '
 fi
 
-RECON_PREFIX=${DOCKER_HOME}/Cache/ses-E00853
+#RECON_PREFIX=${DOCKER_HOME}/Cache/ses-E00853
 
-CONTAINER="nvidia-docker run -it --name $CONTAINER_NAME --net=host -v ${DOCKER_HOME}/hardwareumaps/:/hardwareumaps -v ${DOCKER_HOME}/NiftyPET_tools/:/NiftyPET_tools -v ${DOCKER_HOME}/Cache:/SubjectsDir $IMAGE_NAME $CMD"
+CONTAINER="nvidia-docker run -it --name $CONTAINER_NAME --net=host -v ${DOCKER_HOME}/hardwareumaps/:/hardwareumaps -v ${DOCKER_HOME}/NiftyPET_tools/:/NiftyPET_tools -v /scratch/jjlee/Singularity:/SubjectsDir $IMAGE_NAME $CMD"
 echo 'Starting container with commmand: '$CONTAINER
 eval $CONTAINER
