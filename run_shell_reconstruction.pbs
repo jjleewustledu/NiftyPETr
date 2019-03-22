@@ -1,0 +1,22 @@
+#! /bin/bash
+
+# resources #################################
+
+
+
+# commands for nodes ########################
+
+# manually, from login node:
+# singularity pull docker://jjleewustledu/niftypetr-image:reconstruction_cuda10_1
+#DT=$(date +"%Y%m%d%H%M%S")
+#nvidia-smi > nvidia-smi-$DT.log
+
+set -e
+unset CONDA_DEFAULT_ENV
+module load cuda-10.1
+module load singularity-3.0.2
+singularity shell \
+    --nv \
+    --bind $SINGULARITY_HOME/hardwareumaps:/hardwareumaps \
+    --bind $SINGULARITY_HOME:/SubjectsDir \
+    $SINGULARITY_HOME/niftypetr-image_reconstruction_cuda10_1.sif

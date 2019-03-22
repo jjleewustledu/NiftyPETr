@@ -5,7 +5,6 @@ LABEL maintainer="John J. Lee <www.github.com/jjleewustledu>"
 
 # setup volumes
 VOLUME $HARDWAREUMAPS
-VOLUME $NIFTYPET_TOOLS
 VOLUME $SUBJECTS_DIR
 
 # pip install:  anaconda packages will go to /opt/conda/lib/python2.7/site-packages
@@ -21,8 +20,8 @@ RUN cd $HOME/NiftyPETy && \
     python setup.py install
 # alternatively, install interfile and NiftyPETy manually;
 # then exit container and issue:
-# > nvidia-docker commit niftypetr-container jjleewustledu/niftypetr-image:reconstruction_cuda10
-# > nvidia-docker push                       jjleewustledu/niftypetr-image:reconstruction_cuda10
+# > nvidia-docker commit niftypetr-container jjleewustledu/niftypetr-image:reconstruction_cuda10_1
+# > nvidia-docker push                       jjleewustledu/niftypetr-image:reconstruction_cuda10_1
 
 # run jupyter
 #EXPOSE 7746
@@ -43,4 +42,5 @@ RUN cd $HOME/NiftyPETy && \
 
 # run reconstruction.py; replace "-h" with "-p", "/SubjectsDir/ses-dir/TRACER_DT1234.0000-Converted-NAC"
 WORKDIR $SUBJECTS_DIR
-CMD ["python", "/work/NiftyPETy/respet/recon/reconstruction.py", "-h"]
+ENTRYPOINT ["python", "/work/NiftyPETy/respet/recon/reconstruction.py"]
+CMD ["-h"]
