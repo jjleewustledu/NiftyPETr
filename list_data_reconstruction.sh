@@ -24,7 +24,7 @@ do
 	for tra in *_DT*-Converted-$ac
 	do
 	    pushd $tra
-	    echo "\""$prj/$ses/$tra"\""
+	    echo $prj/$ses/$tra
 	    popd
 	done
 	popd

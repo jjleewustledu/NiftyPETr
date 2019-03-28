@@ -1,5 +1,5 @@
 # reference: https://hub.docker.com/u/jjleewustledu
-FROM jjleewustledu/niftypetd-image:nipet_cuda10
+FROM jjleewustledu/niftypetd-image:nipet_debug
 
 LABEL maintainer="John J. Lee <www.github.com/jjleewustledu>"
 
@@ -20,8 +20,8 @@ RUN cd $HOME/NiftyPETy && \
     python setup.py install
 # alternatively, install interfile and NiftyPETy manually;
 # then exit container and issue:
-# > nvidia-docker commit niftypetr-container jjleewustledu/niftypetr-image:reconstruction_cuda10_1
-# > nvidia-docker push                       jjleewustledu/niftypetr-image:reconstruction_cuda10_1
+# > nvidia-docker commit niftypetr-container jjleewustledu/niftypetr-image:reconstruction
+# > nvidia-docker push                       jjleewustledu/niftypetr-image:reconstruction
 
 # run jupyter
 #EXPOSE 7746
@@ -40,7 +40,10 @@ RUN cd $HOME/NiftyPETy && \
 #WORKDIR $SUBJECTS_DIR
 #CMD ["/bin/bash"]
 
-# run reconstruction.py; replace "-h" with "-p", "/SubjectsDir/ses-dir/TRACER_DT1234.0000-Converted-NAC"
-WORKDIR $SUBJECTS_DIR
+# run reconstruction.py; replace "-h" with:
+# "-v", "false", 
+# "-g", "0", 
+# "-p", "/SubjectsDir/ses-dir/TRACER_DT1234.0000-Converted-NAC"
+WORKDIR    $SUBJECTS_DIR
 ENTRYPOINT ["python", "/work/NiftyPETy/respet/recon/reconstruction.py"]
-CMD ["-h"]
+CMD        ["-h"]
